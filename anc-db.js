@@ -76,10 +76,28 @@ AncClient.upsertSeries = function(seriesData, callback) {
 
     callback(err, data);
   });
-
-
+  
 };
 
+/*
+ * Retrieves last n programs stored in db, where n equals to
+ * the amount of days passed as first parameter.
+ */
+AncClient.getLatestPrograms = function(days, callback) {
+  
+  days = days || 20; //20 days by default
+  
+  console.log("ancClient.getLatestPrograms(): entering....");
+
+  var programs = this.db.collection('programs');
+  console.log("days back: " + days);
+  
+  var cursor = programs.find({}, {"_id":0}).sort({date:-1}).limit(days);
+  
+  var result = cursor.toArray();
+  
+  callback(err, result);  
+}
 connect();
 
 module.exports.AncClient = AncClient;
