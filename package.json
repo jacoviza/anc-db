@@ -11,5 +11,8 @@
   ],
   "author": "jacoviza",
   "license": "ISC",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "mongodb": "^2.1.7"
+  }
 }
