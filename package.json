@@ -1,0 +1,15 @@
+{
+  "name": "anc-db",
+  "version": "1.0.0",
+  "description": "Database interface for anc app. Uses Mongodb",
+  "main": "anc-db.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "anc"
+  ],
+  "author": "jacoviza",
+  "license": "ISC",
+  "private": true
+}
