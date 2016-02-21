@@ -1,5 +1,5 @@
 {
-  "name": "anc-db",
+  "name": "anc-db-interface",
   "version": "1.0.0",
   "description": "Database interface for anc app. Uses Mongodb",
   "main": "anc-db.js",
