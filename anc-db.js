@@ -85,7 +85,7 @@ AncClient.upsertSeries = function(seriesData, callback) {
  */
 AncClient.getLatestPrograms = function(days, callback) {
   
-  days = days || 20; //20 days by default
+  days = parseInt(days) || 20; //20 days by default
   
   console.log("ancClient.getLatestPrograms(): entering....");
 
@@ -94,9 +94,11 @@ AncClient.getLatestPrograms = function(days, callback) {
   
   var cursor = programs.find({}, {"_id":0}).sort({date:-1}).limit(days);
   
-  var result = cursor.toArray();
-  
-  callback(err, result);  
+  cursor.toArray(function(err, docs){
+    callback(null, docs);
+  });
+
+
 }
 connect();
 
