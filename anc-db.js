@@ -21,7 +21,7 @@ function connect() {
 
 AncClient.upsert = function(program, callback) {
 
-  console.log("ancClient.upsert(): entering....");
+  console.log("AncClient.upsert(): entering....");
 
   var programs  = this.db.collection('programs');
   var series    = this.db.collection('series');
@@ -54,7 +54,7 @@ AncClient.upsert = function(program, callback) {
 
 AncClient.upsertSeries = function(seriesData, callback) {
 
-  console.log("ancClient.upsertSeries(): entering....");
+  console.log("AncClient.upsertSeries(): entering....");
 
   var series    = this.db.collection('series');
   console.log("series title: " + seriesData.title);
@@ -87,7 +87,7 @@ AncClient.getLatestPrograms = function(days, callback) {
   
   days = parseInt(days) || 20; //20 days by default
   
-  console.log("ancClient.getLatestPrograms(): entering....");
+  console.log("AncClient.getLatestPrograms(): entering....");
 
   var programs = this.db.collection('programs');
   console.log("days back: " + days);
@@ -99,7 +99,7 @@ AncClient.getLatestPrograms = function(days, callback) {
   });
 
 
-}
+};
 
 /*
  * Gets an array containing all the series existent on DB
@@ -114,7 +114,7 @@ AncClient.getLatestPrograms = function(days, callback) {
  */
 AncClient.getAllSeries = function(callback) {
 
-  console.log("ancClient.getAllSeries(): entering....");
+  console.log("AncClient.getAllSeries(): entering....");
 
   var series = this.db.collection('series');
 
@@ -151,7 +151,25 @@ AncClient.getAllSeries = function(callback) {
   cursor.toArray(function(err, docs){
     callback(null, docs);
   });
+};
+
+/*
+ * Retrieves all programs of any given series. Expects a seriesTitle
+ * to get all programs pertaining to the given series.
+ */
+AncClient.getSeriesPrograms = function(seriesTitle, callback) {
+
+  console.log("AncClient.getSeriesPrograms(): entering....");
+
+  var programs = this.db.collection('programs');
+
+  var cursor = programs.find({series:seriesTitle},{_id:0}).sort({date:1})
+
+  cursor.toArray(function(err, docs){
+    callback(null, docs);
+  });
 }
+
 connect();
 
 module.exports.AncClient = AncClient;
