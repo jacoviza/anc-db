@@ -100,6 +100,58 @@ AncClient.getLatestPrograms = function(days, callback) {
 
 
 }
+
+/*
+ * Gets an array containing all the series existent on DB
+ * format of the response is:
+ * [{
+ *    "title" : "Series Title",
+ *    "description" : "Series description",
+ *    "numOfPrograms" : 5,
+ *    "firstProgram" : "2016-02-15",
+ *    "lastProgram" : "2016-02-19"
+ *  }]
+ */
+AncClient.getAllSeries = function(callback) {
+
+  console.log("ancClient.getAllSeries(): entering....");
+
+  var series = this.db.collection('series');
+
+  var cursor = series.aggregate([
+    {
+        $unwind: "$programs"
+    },
+    {
+        $sort:{ "_id":1, "programs": 1}
+    },
+    {
+        $group: {"_id":"$_id",
+            "title":{$first: "$title"},
+            "description":{$first: "$description"},
+            "numOfPrograms":{$sum:1},
+            "firstProgram":{$first:"$programs"},
+            "lastProgram":{$last:"$programs"}}
+    },
+    {
+        $project: {
+            "_id":0,
+            "title":1,
+            "description":1,
+            "numOfPrograms":1,
+            "firstProgram":1,
+            "lastProgram":1
+        }
+    },
+    {
+        $sort: {"firstProgram":-1}
+    }
+  ]);
+
+  cursor.toArray(function(err, docs){
+    callback(null, docs);
+  });
+}
 connect();
 
 module.exports.AncClient = AncClient;
